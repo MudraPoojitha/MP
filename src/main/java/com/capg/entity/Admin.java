@@ -40,24 +40,22 @@ public class Admin {
 	
 	private String role;
 
-	//@OneToOne(cascade=CascadeType.ALL)
+
 	@OneToOne
 	@JoinColumn(name = "u_id", referencedColumnName = "uId")
 	private User user;
 	
-	//@OneToMany(mappedBy = "admin" , fetch = FetchType.EAGER)
-	//@Fetch(value = FetchMode.SUBSELECT)
 	@OneToMany
 	@JoinColumn
 	private List<Seat> seats;
 	
 	@OneToMany(mappedBy = "admin" , fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	private List<Bookingdetails> bookingdetails;
+	private List<Booking> bookings;
 	
 
 	public Admin(int aId, String adminName, String emailId, String username, String password, String role, User user,
-			List<Seat> seats, List<Bookingdetails> bookingdetails) {
+			List<Seat> seats, List<Booking> bookings) {
 		super();
 		this.aId = aId;
 		this.adminName = adminName;
