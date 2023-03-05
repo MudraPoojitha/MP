@@ -40,9 +40,9 @@ public class BookingController {
 		return bookingService.addBooking(booking);
 	}
 	
-	@GetMapping("/listAllBookingsByUserId/{​​​​​uemail_Id}​​​​​") 
-    public List<Booking> listAllBookingsByUserId(@PathVariable String uemail_Id) throws UserNotFoundException{
-        return bookingService.listAllBookingsByUserId(uemail_Id); 
+	@GetMapping("/listAllBookingsByuemail_Id/{uemail_Id}") 
+    public List<Booking> listAllBookingsByuemail_Id(@PathVariable String uemail_Id) throws UserNotFoundException{
+        return bookingService.listAllBookingsByuemail_Id(uemail_Id); 
     }
 	@GetMapping("/listAllBookingsInDateRange/{startDate}/{endDate}")
 	public List<Booking> listAllBookingsInDateRange(@RequestParam("startDate") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate startDate,@RequestParam("endDate")@DateTimeFormat(iso=DateTimeFormat.ISO.DATE)LocalDate endDate) throws BookingNotFoundException{
@@ -57,6 +57,10 @@ public class BookingController {
 	@DeleteMapping("/deleteBooking/{bookingId}")
 	public Booking deleteBooking(@PathVariable int bookingId) throws BookingNotFoundException{
 		return bookingService.deleteBooking(bookingId);
+	}
+	@PutMapping("/updateBooking")
+	public Booking updateBooking(@RequestBody Booking bookings)throws BookingNotFoundException{
+		return bookingService.updateBooking(bookings);
 	}
 
 }
