@@ -34,9 +34,7 @@ public class Booking {
 	
 	private String seatNumber;
 	
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	@JsonSerialize(using = LocalDateSerializer.class)
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+
 	private LocalDate bookingDate;
 	
 	private String bookingAddress;
@@ -45,18 +43,19 @@ public class Booking {
 	
 	private String uemail_Id;
 	
+	private String bookingStatus;
+	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "u_id", referencedColumnName = "uId")
 	private User user;
 	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "a_id", referencedColumnName = "aId")
+	private Admin admin;
 	
-	
-//	public Booking() {
-//		super();
-//	}
 	
 	public Booking(int bookingId, String seatNumber, LocalDate bookingDate, String bookingAddress, int duration,
-			String uemail_Id, User user) {
+			String uemail_Id,String bookingStatus, User user) {
 		super();
 		this.bookingId = bookingId;
 		this.seatNumber = seatNumber;
@@ -64,6 +63,7 @@ public class Booking {
 		this.bookingAddress = bookingAddress;
 		this.duration = duration;
 		this.uemail_Id = uemail_Id;
+		this.bookingStatus = bookingStatus;
 		this.user = user;
 	}
 
