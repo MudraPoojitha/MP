@@ -28,7 +28,7 @@ public class BookingServiceImpl implements BookingService{
 	}
 
 	@Override 
-    public List<Booking> listAllBookingsByUserId(String uemail_Id) throws UserNotFoundException { 
+    public List<Booking> listAllBookingsByuemail_Id(String uemail_Id) throws UserNotFoundException { 
         List<Booking> bookingList = new ArrayList<Booking>(); 
         try {
             for(Booking i : bookingRepository.findAll()) {  
@@ -74,7 +74,7 @@ public class BookingServiceImpl implements BookingService{
 	}
 
 	@Override
-	public Booking deleteBooking(int bookingId) throws BookingNotFoundException {
+	public String deleteBooking(int bookingId) throws BookingNotFoundException {
 		Booking  bean = null;
 		try {
 			bean = bookingRepository.findById(bookingId).get();
@@ -83,8 +83,19 @@ public class BookingServiceImpl implements BookingService{
 			throw new UserNotFoundException("Booking not found!");
 		}
 		bookingRepository.deleteById(bookingId);
+		return "Booking deleted successfully";
+	}
+        @Override
+	public Booking updateBooking(Booking bookings) throws BookingNotFoundException {
+		Booking  bean = null;
+		try {
+			bean = bookingRepository.findById(bookings.getBookingId()).get();
+		}
+		catch(Exception e) {
+			throw new UserNotFoundException("Booking details details not found!");
+		}
+		bookingRepository.saveAndFlush(bookings);
 		return bean;
 	}
-
 	
 }
