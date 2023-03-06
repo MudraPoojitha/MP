@@ -1,21 +1,12 @@
 package com.capg.service;
-import java.util.regex.Matcher; 
-import java.util.regex.Pattern;
 
-import javax.servlet.Registration;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
+
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.capg.entity.Admin;
 import com.capg.entity.Booking;
-import com.capg.entity.Bookingdetails;
 import com.capg.entity.User;
 import com.capg.exception.UserNotFoundException;
 import com.capg.repository.AdminRepository;
@@ -32,7 +23,7 @@ public class AdminServiceImpl implements AdminService {
 	AdminRepository adminRepository;
 	
 	@Autowired
-	BookingdetailsRepository bookingdetailsRepository;
+	BookingRepository bookingRepository;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -43,7 +34,7 @@ public class AdminServiceImpl implements AdminService {
 		adminRepository.saveAndFlush(admin);
 		return "Admin added successfully";
 	}
-//	
+	
 	
 	@Override
 	public String loginAdmin(String emailId, String password) throws UserNotFoundException {
@@ -58,7 +49,7 @@ public class AdminServiceImpl implements AdminService {
 		catch(Exception e) {
 			throw new UserNotFoundException("Admin details not found!");
 		}
-		return "Loggedin successfully";
+		return "Logged in successfully";
 	}
 
 	@Override
@@ -89,6 +80,21 @@ public class AdminServiceImpl implements AdminService {
 		adminRepository.saveAndFlush(adminDetails);
 		return bean;
 	}
+	@Override
+    public String isAdmin(String emailId) {
+    	Admin bean = new Admin();
+        try {
+            for(Admin i : adminRepository.findAll()) {
+                if(i.getRole().equals("Admin")) {
+                	bean = i;
+                }
+            }
+        }
+        catch(Exception e) {
+            throw new UserNotFoundException("Details not found!");
+        }
+        return "It is a Admin emailId";
+    }
 
 	@Override
 	public Admin deleteAdmin(int adminId) throws UserNotFoundException {
@@ -118,75 +124,63 @@ public class AdminServiceImpl implements AdminService {
 		}
 		return bean;
 	}
-
 	@Override
-	public Bookingdetails approveBooking(int bookingId) throws UserNotFoundException {
-		Bookingdetails  bean = null;
+	public String approveBooking(int bookingId) throws UserNotFoundException {
+		Booking  bean = new Booking();
 		try {
-			bean = bookingdetailsRepository.findById(bookingId).get();
+			bean = bookingRepository.findById(bookingId).get();
 		}
 		catch(Exception e) {
 			throw new UserNotFoundException("Booking details not found!");
 		}
 		bean.setBookingStatus("Approved");
-		return bean;
+		bookingRepository.saveAndFlush(bean);
+		return "Booking is approved";
 	}
 
+
 	@Override
-	public Bookingdetails rejectBooking(int bookingId) throws UserNotFoundException {
-		Bookingdetails  bean = null;
+	public String rejectBooking(int bookingId) throws UserNotFoundException {
+		Booking  bean = null;
 		try {
-			bean = bookingdetailsRepository.findById(bookingId).get();
+			bean = bookingRepository.findById(bookingId).get();
 		}
 		catch(Exception e) {
 			throw new UserNotFoundException("Booking details not found!");
 		}
 		bean.setBookingStatus("Rejected");
-		return bean;
+		bookingRepository.saveAndFlush(bean);
+		return "Booking rejected";
 	}
 
 	@Override
-	public Bookingdetails disallowBooking(int bookingId) throws UserNotFoundException {
-		Bookingdetails  bean = null;
+	public String disallowBooking(int bookingId) throws UserNotFoundException {
+		Booking  bean = null;
 		try {
-			bean = bookingdetailsRepository.findById(bookingId).get();
+			bean = bookingRepository.findById(bookingId).get();
 		}
 		catch(Exception e) {
 			throw new UserNotFoundException("Booking details not found!");
 		}
 		bean.setBookingStatus("Disallowed");
-		return bean;
+		bookingRepository.saveAndFlush(bean);
+		return "Booking disallowed";
 	}
 
 	@Override
-	public Bookingdetails approveCancellation(int bookingId) throws UserNotFoundException {
-	Bookingdetails  bean = null;
+	public String approveCancellation(int bookingId) throws UserNotFoundException {
+		Booking  bean = null;
 		try {
-			bean = bookingdetailsRepository.findById(bookingId).get();
+			bean = bookingRepository.findById(bookingId).get();
 		}
 		catch(Exception e) {
 			throw new UserNotFoundException("Booking details not found!");
 		}
 		bean.setBookingStatus("Cancelled");
-		return bean;
+		bookingRepository.saveAndFlush(bean);
+		return "Cancellation approved";
 	}
 
-	@Override
-	public boolean grantAdminRights(String emailid) throws UserNotFoundException {
-		try {
-			for(User i : userRepository.findAll()) {
-				if(i.getEmailId().equals(emailid)) {
-					i.setRole("Admin");
-				}
-			}
-		}
-		catch(Exception e) {
-			throw new UserNotFoundException("User details not found!");
-		}
-		return true;
-	}
-	
 
-   
 
 }
