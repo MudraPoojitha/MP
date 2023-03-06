@@ -41,20 +41,12 @@ public class UserController {
     {
     return userService.loginUser(request.getEmail(), request.getPassword());
     }
-//    @GetMapping("/loginUser/{emailId}/{password}")
-//    public String loginUser(@PathVariable String emailId,@PathVariable String password)throws UserNotFoundException{
-//        return userService.loginUser(emailId, password);
-//    }
     
     @GetMapping("/findByUserEmailId/{emailId}")
     public User findByUserEmailId(@PathVariable String emailId)throws UserNotFoundException{
         return userService.findByUserEmailId(emailId);
     }
-    
-    @GetMapping("/isAdmin/{emailId}")
-    public boolean isAdmin(@PathVariable String emailId) {
-        return userService.isAdmin(emailId);
-    }
+  
     
     @GetMapping("/validateSecurityAnswer/{emailId}/{securityAnswer}")
     public boolean validateSecurityAnswer(@PathVariable String emailId,@PathVariable String securityAnswer) {
@@ -71,18 +63,5 @@ public class UserController {
         return userService.deleteUserByEmailId(emailId, password);
     }
     
-//    @PutMapping("/updateUserByEmailId/{emailId}/{password}")
-//    public String updateUserByEmailId(@PathVariable String emailId,@PathVariable String password) throws UserNotFoundException{
-//        return userService.updateUserByEmailId(emailId, password);
-//    }
-        
-//    @PostMapping("/save")
-//    public void save(@RequestBody User users) {
-//        userService.save(users);
-//    }
-    
-    @PutMapping("/swapBookings/{bookingId1}/{bookingId2}")
-    public boolean swapBookings(int bookingId1, int bookingId2) throws BookingNotFoundException{
-        return userService.swapBookings(bookingId1, bookingId2);
-    }
+
 }
