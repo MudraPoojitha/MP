@@ -116,6 +116,5 @@ public class UserMockitoTest {
 	    assertEquals("User deleted successfully", result);
 	    verify(userRepository, times(1)).deleteById(user.getuId());
 	}
-	
 
 	}
